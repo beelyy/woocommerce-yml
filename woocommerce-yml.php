@@ -159,9 +159,7 @@ class WOO_YML {
 	// }
 
 	public function yml_path($param) {
-		// print_r(wp_upload_dir());
 		$updir = wp_upload_dir();
-		// $updir['baseurl'].'/'.self::$defaults['yml_file']
 		return $updir[$param].'/'.self::$defaults['file'];
 	}
 
