@@ -20,7 +20,7 @@ class WOO_YML {
 	
 	function __construct() {
 
-		self::$plugname = 'Woocommerce Test';
+		self::$plugname = 'Export to Rozetka.ua';
 		self::$plugslug = 'wooyml';
 
 		self::$defaults = array(
@@ -32,11 +32,15 @@ class WOO_YML {
 			'vendor' 		=> 'disabled'
 		);
 
-		// print_r($this->options);
-
 		add_action('template_redirect', array(&$this, 'yml_redirect'), 10, 1);
+
 		require plugin_dir_path(__FILE__).'admin.php';
 		require plugin_dir_path(__FILE__).'cron.php';
+
+		if(!self::check_dependencies()) {
+			add_action('admin_notices', array(&$this, 'activation_message'), 10, 1);
+			return;
+		}
 	
 	}
 
@@ -174,6 +178,7 @@ class WOO_YML {
 	public function activate() {
 		update_option(self::$plugslug.'_options', self::$defaults);
 		WOO_YML_Cron::wooyml_cron_update(self::$defaults['cron']);
+		// self::message('error', 'test1');
 			// array(
 			// 	'cron'=>self::$defaults['cron']
 			// )
@@ -185,6 +190,26 @@ class WOO_YML {
 		wp_unschedule_event($timestamp, self::$plugslug.'_cron_hook');
 		delete_option(self::$plugslug.'_options');
 		unlink(self::yml_path('basedir'));
+	}
+
+	public static function check_dependencies() {
+		if(!function_exists('get_plugins')) {
+			require_once ABSPATH.'wp-admin/includes/plugin.php';
+		}
+
+		if(empty(get_plugins('/woocommerce')) || !is_plugin_active('woocommerce/woocommerce.php')) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function activation_message() {
+		?>
+		<div class="error notice">
+			<p><?php _e('<a href="https://wordpress.org/plugins/woocommerce/">WooCommerce</a> is not activated.', 'wooyml' ); ?></p>
+		</div>
+		<?php
 	}
 
 }

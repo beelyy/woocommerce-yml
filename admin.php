@@ -13,13 +13,17 @@ class WOO_YML_Admin {
     }
 
     public function admin_menu() {
-		add_submenu_page('tools.php', 'Дополнительная страница инструментов', 'YML Export Settings', 'manage_options', WOO_YML::$plugslug, array(&$this, 'options_page'));
+		add_submenu_page('tools.php', WOO_YML::$plugname.' Options', WOO_YML::$plugname, 'manage_options', WOO_YML::$plugslug, array(&$this, 'options_page'));
     }
     
     public function options_page() {
         ?>
         <div class="wrap">
         <h1><?php echo WOO_YML::$plugname; ?></h1>
+        <div class="notice notice-info">
+            <p>YML Location:<br><?php echo WOO_YML::yml_path('baseurl'); ?></p>
+        </div>
+        <?php //settings_errors(); ?>
         <form method="post" action="options.php">
         <?php settings_fields(WOO_YML::$plugslug); ?>
         <?php do_settings_sections(WOO_YML::$plugslug); ?>       
@@ -32,7 +36,7 @@ class WOO_YML_Admin {
         register_setting(
             WOO_YML::$plugslug,
             WOO_YML::$plugslug.'_options',
-            array( $this, 'validate_shop_settings_array' )
+            array($this, 'validate_shop_settings_array')
         );
 
         add_settings_section(
@@ -44,8 +48,8 @@ class WOO_YML_Admin {
 
         add_settings_field(
             WOO_YML::$plugslug.'_website_name',
-            __( 'Website name', 'wooyml' ),
-            array( $this, 'render_input_fields' ),
+            __( 'Website Name', 'wooyml' ),
+            array($this, 'render_input_fields'),
             WOO_YML::$plugslug,
             WOO_YML::$plugslug.'_section_general',
             array(
@@ -58,8 +62,8 @@ class WOO_YML_Admin {
 
         add_settings_field(
             WOO_YML::$plugslug.'_company_name',
-            __( 'Company name', 'wooyml' ),
-            array( $this, 'render_input_fields' ),
+            __( 'Company Name', 'wooyml' ),
+            array($this, 'render_input_fields'),
             WOO_YML::$plugslug,
             WOO_YML::$plugslug.'_section_general',
             array(
@@ -73,7 +77,7 @@ class WOO_YML_Admin {
         add_settings_field(
             WOO_YML::$plugslug.'_cron',
             __( 'Cron', 'wooyml' ),
-            array( $this, 'render_input_fields' ),
+            array($this, 'render_input_fields'),
             WOO_YML::$plugslug,
             WOO_YML::$plugslug.'_section_general',
             array(
@@ -101,7 +105,7 @@ class WOO_YML_Admin {
         add_settings_field(
 			WOO_YML::$plugslug.'_vendor',
 			__( 'Vendor', 'wooyml' ),
-			array( $this, 'render_input_fields' ),
+			array($this, 'render_input_fields'),
 			WOO_YML::$plugslug,
 			WOO_YML::$plugslug.'_section_general',
 			array(
