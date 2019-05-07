@@ -210,6 +210,5 @@ class WOO_YML_Admin {
     }
     
 }
-$wooyml_admin = new WOO_YML_Admin();
-
+new WOO_YML_Admin();
 ?>
