@@ -42,6 +42,5 @@ class WOO_YML_Cron {
     }
 
 }
-$wooyml_cron = new WOO_YML_Cron();
-
+new WOO_YML_Cron();
 ?>
