@@ -217,6 +217,5 @@ class WOO_YML {
 register_activation_hook(__FILE__, 'WOO_YML::activate');
 register_deactivation_hook(__FILE__, 'WOO_YML::deactivate');
 
-$wooyml = new WOO_YML();
-
+new WOO_YML();
 ?>
